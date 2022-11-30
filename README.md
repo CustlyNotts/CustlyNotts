@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @CustlyNotts
-- 👀 I’m interested in Cisco DevNet, DevOps, Network Automation and Cloud technologies.
+- 👀 I’m interested in DevOps, DevSecOps and Cloud technologies.
 - 🌱 I’m currently learning Cloud DevOps practices from the Linux Foundation.
 - 💞️ I’m looking to collaborate on everything network automation, networking and cloud technologies.
 - 📫 How to reach me: (+234)8131821224 or aturuka.kehinde@gmail.com.
