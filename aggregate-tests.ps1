@@ -29,3 +29,26 @@ Write-Host "Total Tests: $totalTests"
 Write-Host "Passed: $passedTests"
 Write-Host "Failed: $failedTests"
 Write-Host "Skipped: $skippedTests"
+------
+import xml.etree.ElementTree as ET
+import glob
+
+trx_files = glob.glob("$(Agent.TempDirectory)/*.trx")
+total, passed, failed, skipped = 0, 0, 0, 0
+
+for file in trx_files:
+    tree = ET.parse(file)
+    root = tree.getroot()
+    namespace = "{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}"
+    
+    results = root.find(f"./{namespace}Results")
+    if results:
+        total += len(results.findall(f"{namespace}UnitTestResult"))
+        passed += len(results.findall(f"{namespace}UnitTestResult[@outcome='Passed']"))
+        failed += len(results.findall(f"{namespace}UnitTestResult[@outcome='Failed']"))
+        skipped += len(results.findall(f"{namespace}UnitTestResult[@outcome='NotExecuted']"))
+
+print(f"Total Tests: {total}")
+print(f"Passed: {passed}")
+print(f"Failed: {failed}")
+print(f"Skipped: {skipped}")
