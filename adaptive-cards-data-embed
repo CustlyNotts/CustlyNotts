@@ -82,7 +82,7 @@
                             "type": "TableCell",
                             "items": [
                                 {
-                                    "text": "{testResult.passed}",
+                                    "text": "${testResult.passed}",
                                     "type": "TextBlock",
                                     "weight": "Bolder"
                                 }
@@ -108,7 +108,7 @@
                             "type": "TableCell",
                             "items": [
                                 {
-                                    "text": "{testResult.failed}",
+                                    "text": "${testResult.failed}",
                                     "type": "TextBlock",
                                     "weight": "Bolder"
                                 }
@@ -134,7 +134,7 @@
                             "type": "TableCell",
                             "items": [
                                 {
-                                    "text": "{testResult.skipped}",
+                                    "text": "${testResult.skipped}",
                                     "type": "TextBlock",
                                     "weight": "Bolder"
                                 }
@@ -160,7 +160,7 @@
                             "type": "TableCell",
                             "items": [
                                 {
-                                    "text": "{testResult.total}",
+                                    "text": "${testResult.total}",
                                     "type": "TextBlock",
                                     "weight": "Bolder"
                                 }
@@ -211,17 +211,17 @@
                 {
                     "legend": "Passed",
                     "color": "categoricalGreen",
-                    "value": 59
+                    "value": "${testResult.passed}"
                 },
                 {
                     "legend": "Failed",
                     "color": "categoricalRed",
-                    "value": 2
+                    "value": "${testResult.failed}"
                 },
                 {
                     "legend": "Skipped",
                     "color": "neutral",
-                    "value": 1
+                    "value": "${testResult.skipped}"
                 }
             ],
             "type": "Chart.Donut"
