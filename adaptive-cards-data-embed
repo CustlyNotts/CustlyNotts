@@ -1,0 +1,230 @@
+{
+    "type": "AdaptiveCard",
+    "$data": {
+        "testResult": {
+          "passed": "85",
+          "failed": "2",
+          "skipped": "13",
+          "total": "100"
+        }
+    },
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Test Results",
+            "weight": "Bolder",
+            "size": "ExtraLarge",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "Table",
+            "columns": [
+                {
+                    "width": 5
+                },
+                {
+                    "width": 5
+                }
+            ],
+            "rows": [
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Type",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Total",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "style": "good",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Passed",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "{testResult.passed}",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "style": "attention",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Failed",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "{testResult.failed}",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "style": "accent",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Skipped",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "{testResult.skipped}",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "style": "emphasis",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "Total Tests",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "text": "{testResult.total}",
+                                    "type": "TextBlock",
+                                    "weight": "Bolder"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": " ",
+            "wrap": true
+        },
+        {
+            "title": "New Chart.Donut",
+            "data": [
+                {
+                    "legend": "Passed",
+                    "color": "categoricalGreen",
+                    "value": 59
+                },
+                {
+                    "legend": "Failed",
+                    "color": "categoricalRed",
+                    "value": 2
+                },
+                {
+                    "legend": "Skipped",
+                    "color": "neutral",
+                    "value": 1
+                }
+            ],
+            "type": "Chart.Donut"
+        }
+    ]
+}
