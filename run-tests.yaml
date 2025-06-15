@@ -1,0 +1,100 @@
+parameters:
+- name: base64_input
+  type: string
+  default: ''
+- name: passed
+  type: string
+  default: ''
+- name: failed
+  type: string
+  default: ''
+- name: skipped
+  type: string
+  default: ''
+- name: total
+  type: string
+  default: ''
+
+trigger: none  # or your preferred trigger
+
+steps:
+- task: PythonScript@0
+  name: updateConfig  # Name is important for referencing the output
+  displayName: 'Run Tests & Update Config'
+  inputs:
+    scriptSource: 'inline'
+    script: |
+      import base64
+      import json
+      import sys
+      import xml.etree.ElementTree as ET
+      import glob
+      import os
+
+      def test_results():
+        trx_files = glob.glob(os.path.join(os.environ['AGENT_TEMPDIRECTORY'], '*.trx'))
+        total, passed, failed, skipped = 0, 0, 0, 0
+
+        for file in trx_files:
+            tree = ET.parse(file)
+            root = tree.getroot()
+            namespaces = {
+                'ns' : 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010',
+                'ns2' : 'http://microsoft.com/schemas/VisualStudio/TeamTest/2020'
+            }
+
+            for ns_key, ns_url in namespaces.items():
+              results = root.find(f".//{{{ns_url}}}Results")
+              if results is not None:
+                  total += len(results.findall(f"{{{ns_url}}}UnitTestResult"))
+                  passed += len(results.findall(f"{{{ns_url}}}UnitTestResult[@outcome='Passed']"))
+                  failed += len(results.findall(f"{{{ns_url}}}UnitTestResult[@outcome='Failed']"))
+                  skipped += len(results.findall(f"{{{ns_url}}}UnitTestResult[@outcome='NotExecuted']"))
+        
+        return passed, failed, skipped, total
+
+      def update_config(base64_input, passed, failed, skipped, total):
+          # Step 1: Decode base64 to JSON string
+          json_str = base64.b64decode(base64_input).decode('utf-8')
+
+          # Step 2: Parse JSON
+          config = json.loads(json_str)
+
+          # Step 3: Update values
+          # Update the table values
+          config["body"][3]["rows"][1]["cells"][1]["items"][0]["text"] = str(passed)
+          config["body"][3]["rows"][2]["cells"][1]["items"][0]["text"] = str(failed)
+          config["body"][3]["rows"][3]["cells"][1]["items"][0]["text"] = str(skipped)
+          config["body"][3]["rows"][4]["cells"][1]["items"][0]["text"] = str(total)
+          
+          # Update the chart values
+          config["body"][11]["data"][0]["value"] = str(passed)
+          config["body"][11]["data"][1]["value"] = str(failed)
+          config["body"][11]["data"][2]["value"] = str(skipped)
+
+          # Step 4: Convert back to JSON string and encode to base64
+          updated_json_str = json.dumps(config)
+          updated_base64 = base64.b64encode(updated_json_str.encode('utf-8')).decode('utf-8')
+
+          return updated_base64
+
+      if __name__ == "__main__":
+          try:
+              if len(sys.argv) != 2:
+                  raise ValueError("Expected 1 arguments: base64_input")
+                  
+              base64_input = sys.argv[1]
+              
+              # Validate base64 input (basic check)
+              if not base64_input or not all(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=" for c in base64_input):
+                  raise ValueError("Invalid base64 input")
+              pass_count, fail_count, skip_count, total_count = test_results()    
+              result = update_config(base64_input, pass_count, fail_count, skip_count, total_count)
+              print(f"##vso[task.setvariable variable=updatedConfig;isoutput=true]{result}")
+          except Exception as e:
+              print(f"##vso[task.logissue type=error]Error processing parameters: {str(e)}")
+              sys.exit(1)
+    arguments: '${{ parameters.base64_input }}'
+
+- script: echo "Updated config is $(updateConfig.updatedConfig)"
+  displayName: 'Use the updated config'
